@@ -68,13 +68,14 @@ Locality Sensitive Hashing is an approximate nearest neighbor technique that:
 ---
 
 ## Project Structure
+```python
 .
 ├── helper.py # NLP preprocessing, KNN, and LSH utilities
 ├── main.py # End-to-end execution pipeline
 ├── en_embeddings.p # English word embeddings
 ├── fr_embeddings.p # French word embeddings
 ├── README.md # Documentation
-
+```
 
 ---
 
