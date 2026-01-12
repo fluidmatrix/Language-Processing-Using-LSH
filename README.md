@@ -62,23 +62,23 @@ Traditional KNN is expensive for large datasets; LSH reduces the search space wh
 ├── README.md        # Documentation
 ```
 
-# 🧹 TWEET PREPROCESSING
+## 🧹 TWEET PREPROCESSING
 processed_tweet = process_tweet(tweet)  # Remove URLs, hashtags, stopwords, tokenize, stem
 
-# 🧩 DOCUMENT EMBEDDINGS
+## 🧩 DOCUMENT EMBEDDINGS
 doc_embedding = get_document_embedding(tweet, en_embeddings)
 document_vec_matrix, ind2Tweet_dict = get_document_vecs(all_tweets, en_embeddings)
 
-# 🔑 LSH HASH TABLES
+## 🔑 LSH HASH TABLES
 planes_l = [np.random.normal(size=(N_DIMS, N_PLANES)) for _ in range(N_UNIVERSES)]
 hash_tables, id_tables = create_hash_id_tables(N_UNIVERSES)
 
-# ⚡ APPROXIMATE KNN SEARCH
+## ⚡ APPROXIMATE KNN SEARCH
 nearest_neighbor_ids = approximate_knn(
     doc_id, vec_to_search, planes_l, hash_tables, id_tables, k=3, num_universes_to_use=5
 )
 
-# 📢 Display Results
+## 📢 Display Results
 print(f"Nearest neighbors for document {doc_id}:")
 for neighbor_id in nearest_neighbor_ids:
     print(ind2Tweet_dict[neighbor_id])
