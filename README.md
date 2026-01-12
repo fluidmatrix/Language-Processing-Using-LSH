@@ -1,101 +1,87 @@
-# Approximate Nearest Neighbors using KNN and Locality Sensitive Hashing
+# Approximate Nearest Neighbors using KNN & LSH
 
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![NLP](https://img.shields.io/badge/domain-NLP-orange)
-![Algorithm](https://img.shields.io/badge/algorithm-KNN%20%7C%20LSH-purple)
-![Status](https://img.shields.io/badge/status-educational-success)
+![Python](https://img.shields.io/badge/python-3.9%2B-blue) ![NLP](https://img.shields.io/badge/domain-NLP-orange) ![Algorithm](https://img.shields.io/badge/algorithm-KNN%20%7C%20LSH-purple) ![Status](https://img.shields.io/badge/status-educational-success)
 
 ## Table of Contents
 * Project Overview
-* Installation
-* Usage
-* Algorithms
-* Results
-
-# Approximate Nearest Neighbors using KNN and Locality Sensitive Hashing
-
-This repository demonstrates how **K-Nearest Neighbors (KNN)** can be scaled efficiently using **Locality Sensitive Hashing (LSH)** for high-dimensional natural language data.  
-The project applies these techniques to tweet embeddings to find semantically similar tweets.
+* Key Features
+* Core Concepts
+  * KNN
+  * LSH
+* Project Structure
+* Code Workflow
+* Requirements
+* Applications
+* References
+* Author
 
 ---
 
 ## Project Overview
-
-Traditional KNN requires comparing a query vector with every vector in the dataset, which becomes computationally expensive for large datasets.  
-This project uses Locality Sensitive Hashing to reduce the search space while preserving similarity.
+This repository demonstrates how **K-Nearest Neighbors (KNN)** can be scaled efficiently using **Locality Sensitive Hashing (LSH)** for high-dimensional natural language data.  
+It applies these techniques to tweet embeddings to find semantically similar tweets.  
+Traditional KNN is expensive for large datasets; LSH reduces the search space while preserving similarity.
 
 ---
 
 ## Key Features
-
-* Tweet preprocessing and normalization
-* Document embeddings using word vectors
-* Cosine similarity based KNN
-* Approximate nearest neighbor search using LSH
-* Multiple hash universes to improve recall
+* 📝 Tweet preprocessing & normalization
+* 📄 Document embeddings using pretrained word vectors
+* 🔍 Cosine similarity based KNN
+* ⚡ Approximate nearest neighbor search using LSH
+* 🌌 Multiple hash universes to improve recall
 
 ---
 
 ## Core Concepts
 
-### K-Nearest Neighbors (KNN)
-
-KNN is a distance-based algorithm that:
-
+**K-Nearest Neighbors (KNN)**:
 * Represents data points as vectors
 * Computes similarity using cosine similarity
-* Selects the top *k* nearest neighbors
+* Selects top *k* nearest neighbors
+* Limitation: Brute-force KNN has O(N) per query time complexity.
 
-**Limitation:**  
-Brute-force KNN has a time complexity of *O(N)* per query.
-
----
-
-### Locality Sensitive Hashing (LSH)
-
-Locality Sensitive Hashing is an approximate nearest neighbor technique that:
-
+**Locality Sensitive Hashing (LSH)**:
 * Uses random hyperplanes to partition vector space
 * Hashes similar vectors into the same buckets
 * Restricts similarity search to a small subset of vectors
-
-**Advantages:**
-
-* Sub-linear query time
-* Efficient for high-dimensional data
-* Suitable for NLP and recommendation systems
+* Advantages:
+  * Sub-linear query time
+  * Efficient for high-dimensional data
+  * Ideal for NLP & recommendation systems
 
 ---
 
 ## Project Structure
 ```python
 .
-├── helper.py # NLP preprocessing, KNN, and LSH utilities
-├── main.py # End-to-end execution pipeline
-├── en_embeddings.p # English word embeddings
-├── fr_embeddings.p # French word embeddings
-├── README.md # Documentation
+├── helper.py        # NLP preprocessing, KNN & LSH utilities
+├── main.py          # End-to-end execution pipeline
+├── en_embeddings.p  # English word embeddings
+├── fr_embeddings.p  # French word embeddings
+├── README.md        # Documentation
 ```
 
----
+# 🧹 TWEET PREPROCESSING
+processed_tweet = process_tweet(tweet)  # Remove URLs, hashtags, stopwords, tokenize, stem
 
-## Code Workflow
+# 🧩 DOCUMENT EMBEDDINGS
+doc_embedding = get_document_embedding(tweet, en_embeddings)
+document_vec_matrix, ind2Tweet_dict = get_document_vecs(all_tweets, en_embeddings)
 
-### Tweet Preprocessing
+# 🔑 LSH HASH TABLES
+planes_l = [np.random.normal(size=(N_DIMS, N_PLANES)) for _ in range(N_UNIVERSES)]
+hash_tables, id_tables = create_hash_id_tables(N_UNIVERSES)
 
-Tweets are cleaned by:
+# ⚡ APPROXIMATE KNN SEARCH
+nearest_neighbor_ids = approximate_knn(
+    doc_id, vec_to_search, planes_l, hash_tables, id_tables, k=3, num_universes_to_use=5
+)
 
-* Removing URLs, hashtags, and stopwords
-* Tokenizing text
-* Applying stemming
-
-process_tweet(tweet)
-
----
-
-### Document Embeddings
-
-Each tweet is converted into a 300-dimensional vector by summing word embeddings.
+# 📢 Display Results
+print(f"Nearest neighbors for document {doc_id}:")
+for neighbor_id in nearest_neighbor_ids:
+    print(ind2Tweet_dict[neighbor_id])
 
 ## Requirements
 
